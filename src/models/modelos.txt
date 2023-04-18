@@ -1,0 +1,17 @@
+touch facultades.controller.js
+touch tipos_programas.controller.js
+touch asignaturas.controller.js
+touch semestres.controller.js
+touch salones.controller.js
+touch horarios.controller.js
+touch grupos_asignaturas.controller.js
+touch grupos_asignaturas_horarios.controller.js
+touch personas.controller.js
+touch usuarios.controller.js
+touch administradores.controller.js
+touch docentes.controller.js
+touch estudiantes.controller.js
+touch estudiantes_grupos.controller.js
+touch programas_estudiantes.controller.js
+touch actividades.controller.js
+touch notas_actividades.controller.js
