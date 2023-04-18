@@ -37,7 +37,7 @@ const createPrograma = (request, response) => {
 const updatePrograma = (request, response) => {
   model.updatePrograma(request.params.id_prog, request.body)
   .then(result => {
-    response.json({rowCount: result.rowCount, newPrograma: result.rows[0]});
+    response.json({rowCount: result.rowCount, updatedPrograma: result.rows[0]});
   })
   .catch(err => {
     console.log(err);
@@ -48,7 +48,7 @@ const updatePrograma = (request, response) => {
 const deletePrograma = (request, response) => {
   model.deletePrograma(request.params.id_prog)
   .then(result => {
-    response.json({rowCount: result.rowCount, newPrograma: result.rows[0]});
+    response.json({rowCount: result.rowCount, deletedPrograma: result.rows[0]});
   })
   .catch(err => {
     console.log(err);

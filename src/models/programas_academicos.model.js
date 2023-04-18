@@ -17,7 +17,8 @@ const selectProgramas = (limit = 100) => {
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN facultades ON ${table}.id_fac = facultades.id_fac
-    INNER JOIN tipos_programas ON ${table}.id_tipo = tipos_programas.id_tipo  
+    INNER JOIN tipos_programas ON ${table}.id_tipo = tipos_programas.id_tipo
+    WHERE estado = true
     ORDER BY ${primaryKey}
     LIMIT ${limit}
   `);
@@ -37,7 +38,7 @@ const selectOnePrograma = (id_prog) => {
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN facultades ON ${table}.id_fac = facultades.id_fac
     INNER JOIN tipos_programas ON ${table}.id_tipo = tipos_programas.id_tipo 
-    WHERE ${primaryKey} = ${id_prog} 
+    WHERE ${primaryKey} = ${id_prog} AND estado = true
     ORDER BY ${primaryKey}
   `);
   return result;
@@ -52,12 +53,12 @@ const insertPrograma = (data) => {
 const updatePrograma = (id_prog, data) => {
   const [columns_update, values_update] = getColumnsValuesSQL(data);
   const set_update = columns_update.map((col, i) => col+'='+values_update[i]);
-  const result = db.query(`UPDATE ${table} SET ${set_update} WHERE ${primaryKey} = ${id_prog} RETURNING *`);
+  const result = db.query(`UPDATE ${table} SET ${set_update} WHERE ${primaryKey} = ${id_prog} AND estado = true RETURNING *`);
   return result;
 };
 
 const deletePrograma = (id_prog) => {
-  const result = db.query(`UPDATE ${table} SET estado=false WHERE ${primaryKey} = ${id_prog} RETURNING *`);
+  const result = db.query(`UPDATE ${table} SET estado=false WHERE ${primaryKey} = ${id_prog} AND estado = true RETURNING *`);
   return result;
 };
 
