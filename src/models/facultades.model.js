@@ -11,7 +11,8 @@ const selectFacultades = (limit = 100) => {
     `nombre`, 
   ];
   const result = db.query(`
-    SELECT ${columns_select.join(', ')} FROM ${table}   
+    SELECT ${columns_select.join(', ')} FROM ${table}
+    WHERE estado = true   
     ORDER BY ${primaryKey}
     LIMIT ${limit}
   `);
@@ -25,7 +26,7 @@ const selectOneFacultad = (id_fac) => {
   ];
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table} 
-    WHERE ${primaryKey} = ${id_fac}  
+    WHERE ${primaryKey} = ${id_fac} AND estado = true
     ORDER BY ${primaryKey}
   `);
   return result;

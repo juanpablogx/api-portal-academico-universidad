@@ -5,6 +5,7 @@ const port = 3000;
 
 const programasAcademicosRouter = require('./routes/programas_academicos.routes');
 const facultadesRouter = require('./routes/facultades.routes');
+const tiposProgramasRouter = require('./routes/tipos_programas.routes');
 
 app.get('/', (request, response) => {
   response.send({
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use(programasAcademicosRouter);
 app.use(facultadesRouter);
+app.use(tiposProgramasRouter);
 
 app.listen(port, () => {
   console.log(`Server active on port ${port}`);
