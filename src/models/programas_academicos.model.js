@@ -18,7 +18,7 @@ const selectProgramas = (limit = 100) => {
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN facultades ON ${table}.id_fac = facultades.id_fac
     INNER JOIN tipos_programas ON ${table}.id_tipo = tipos_programas.id_tipo
-    WHERE estado = true
+    WHERE ${table}.estado = true
     ORDER BY ${primaryKey}
     LIMIT ${limit}
   `);
@@ -38,7 +38,7 @@ const selectOnePrograma = (id_prog) => {
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN facultades ON ${table}.id_fac = facultades.id_fac
     INNER JOIN tipos_programas ON ${table}.id_tipo = tipos_programas.id_tipo 
-    WHERE ${primaryKey} = ${id_prog} AND estado = true
+    WHERE ${primaryKey} = ${id_prog} AND ${table}.estado = true
     ORDER BY ${primaryKey}
   `);
   return result;
