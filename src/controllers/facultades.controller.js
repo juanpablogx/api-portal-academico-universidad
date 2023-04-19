@@ -1,58 +1,52 @@
 const model = require('../models/facultades.model');
-const { ERROR_RESPONSE_DB } = require('./base.controller')
 
-const getAllFacultades = (request, response) => {
+const getAllFacultades = (request, response, next) => {
   model.selectFacultades()
     .then(result => {
       response.json({facultades: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const getOneFacultad = (request, response) => {
+const getOneFacultad = (request, response, next) => {
   model.selectOneFacultad(request.params.id_fac)
     .then(result => {
       response.json({facultades: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const createFacultad = (request, response) => {
+const createFacultad = (request, response, next) => {
   model.insertFacultad(request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, newFacultad: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const updateFacultad = (request, response) => {
+const updateFacultad = (request, response, next) => {
   model.updateFacultad(request.params.id_fac, request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedFacultad: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const deleteFacultad = (request, response) => {
+const deleteFacultad = (request, response, next) => {
   model.deleteFacultad(request.params.id_fac)
   .then(result => {
     response.json({rowCount: result.rowCount, deletedFacultad: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 

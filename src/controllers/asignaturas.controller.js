@@ -1,58 +1,52 @@
 const model = require('../models/asignaturas.model');
-const { ERROR_RESPONSE_DB } = require('./base.controller')
 
-const getAllAsignaturas = (request, response) => {
+const getAllAsignaturas = (request, response, next) => {
   model.selectAsignaturas()
     .then(result => {
-      response.json({tiposProgramas: result.rows});
+      response.json({asignaturas: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const getOneAsignatura = (request, response) => {
+const getOneAsignatura = (request, response, next) => {
   model.selectOneAsignatura(request.params.id_asig)
     .then(result => {
-      response.json({tiposProgramas: result.rows});
+      response.json({asignaturas: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const createAsignatura = (request, response) => {
+const createAsignatura = (request, response, next) => {
   model.insertAsignatura(request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, newAsignatura: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const updateAsignatura = (request, response) => {
+const updateAsignatura = (request, response, next) => {
   model.updateAsignatura(request.params.id_asig, request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedAsignatura: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const deleteAsignatura = (request, response) => {
+const deleteAsignatura = (request, response, next) => {
   model.deleteAsignatura(request.params.id_asig)
   .then(result => {
     response.json({rowCount: result.rowCount, deletedAsignatura: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 

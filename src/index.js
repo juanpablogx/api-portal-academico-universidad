@@ -9,6 +9,7 @@ const programasAcademicosRouter = require('./routes/programas_academicos.routes'
 const facultadesRouter = require('./routes/facultades.routes');
 const tiposProgramasRouter = require('./routes/tipos_programas.routes');
 const asignaturasRouter = require('./routes/asignaturas.routes');
+const semestresRouter = require('./routes/semestres.routes');
 
 app.get('/', (request, response) => {
   response.send({
@@ -20,10 +21,16 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.use((err, request, response, next) => {
+  console.log(err);
+  response.status(500).json({message: err.message});
+});
+
 app.use(programasAcademicosRouter);
 app.use(facultadesRouter);
 app.use(tiposProgramasRouter);
 app.use(asignaturasRouter);
+app.use(semestresRouter);
 
 app.listen(port, () => {
   console.log(`Server active on port ${port}`);

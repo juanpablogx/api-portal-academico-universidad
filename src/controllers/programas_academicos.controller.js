@@ -1,58 +1,52 @@
 const model = require('../models/programas_academicos.model');
-const { ERROR_RESPONSE_DB } = require('./base.controller')
 
-const getAllProgramas = (request, response) => {
+const getAllProgramas = (request, response, next) => {
   model.selectProgramas()
     .then(result => {
       response.json({programas: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const getOnePrograma = (request, response) => {
+const getOnePrograma = (request, response, next) => {
   model.selectOnePrograma(request.params.id_prog)
     .then(result => {
       response.json({programas: result.rows});
     })
     .catch(err => {
-      console.log(err);
-      response.status(500).json(ERROR_RESPONSE_DB);
+      next(err);
     });
 };
 
-const createPrograma = (request, response) => {
+const createPrograma = (request, response, next) => {
   model.insertPrograma(request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, newPrograma: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const updatePrograma = (request, response) => {
+const updatePrograma = (request, response, next) => {
   model.updatePrograma(request.params.id_prog, request.body)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedPrograma: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
-const deletePrograma = (request, response) => {
+const deletePrograma = (request, response, next) => {
   model.deletePrograma(request.params.id_prog)
   .then(result => {
     response.json({rowCount: result.rowCount, deletedPrograma: result.rows[0]});
   })
   .catch(err => {
-    console.log(err);
-    response.status(500).json(ERROR_RESPONSE_DB);
+    next(err);
   });
 };
 
