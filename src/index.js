@@ -11,6 +11,7 @@ const tiposProgramasRouter = require('./routes/tipos_programas.routes');
 const asignaturasRouter = require('./routes/asignaturas.routes');
 const semestresRouter = require('./routes/semestres.routes');
 const salonesRouter = require('./routes/salones.routes');
+const horariosRouter = require('./routes/horarios.routes');
 
 app.get('/', (request, response) => {
   response.send({
@@ -33,6 +34,7 @@ app.use(tiposProgramasRouter);
 app.use(asignaturasRouter);
 app.use(semestresRouter);
 app.use(salonesRouter);
+app.use(horariosRouter);
 
 app.listen(port, () => {
   console.log(`Server active on port ${port}`);
