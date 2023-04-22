@@ -13,6 +13,10 @@ const semestresRouter = require('./routes/semestres.routes');
 const salonesRouter = require('./routes/salones.routes');
 const horariosRouter = require('./routes/horarios.routes');
 const personasRouter = require('./routes/personas.routes');
+const usuariosRouter = require('./routes/usuarios.routes');
+const administradoresRouter = require('./routes/administradores.routes');
+const docentesRouter = require('./routes/docentes.routes');
+const estudiantesRouter = require('./routes/estudiantes.routes');
 
 app.get('/', (request, response) => {
   response.send({
@@ -37,6 +41,10 @@ app.use(semestresRouter);
 app.use(salonesRouter);
 app.use(horariosRouter);
 app.use(personasRouter);
+app.use(usuariosRouter);
+app.use(administradoresRouter);
+app.use(docentesRouter);
+app.use(estudiantesRouter);
 
 app.listen(port, () => {
   console.log(`Server active on port ${port}`);
