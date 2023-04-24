@@ -13,9 +13,12 @@ const selectUsuarios = (limit = 100) => {
     `personas.nombre2`, 
     `personas.apellido1`,
     `personas.apellido2`,
-    `administradores.codigo_dni AS administrador`,
-    `docentes.codigo_dni AS docente`,
-    `estudiantes.codigo_dni AS estudiante`
+    `CASE 
+      WHEN administradores.codigo_dni IS NOT NULL THEN 'administrador'
+      WHEN docentes.codigo_dni IS NOT NULL THEN 'docente'
+      WHEN estudiantes.codigo_dni IS NOT NULL THEN 'estudiante'
+      ELSE NULL
+    END AS tipo`
   ];
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table}
@@ -38,9 +41,12 @@ const selectOneUsuario = (codigo_dni, password = null) => {
     `personas.nombre2`, 
     `personas.apellido1`,
     `personas.apellido2`,
-    `administradores.codigo_dni AS administrador`,
-    `docentes.codigo_dni AS docente`,
-    `estudiantes.codigo_dni AS estudiante`
+    `CASE 
+      WHEN administradores.codigo_dni IS NOT NULL THEN 'administrador'
+      WHEN docentes.codigo_dni IS NOT NULL THEN 'docente'
+      WHEN estudiantes.codigo_dni IS NOT NULL THEN 'estudiante'
+      ELSE NULL
+    END AS tipo`
   ];
   const wherePassword = password != null ? ` AND ${table}.password = ${password}`:``;
   const result = db.query(`
