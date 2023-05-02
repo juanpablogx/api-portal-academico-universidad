@@ -21,7 +21,7 @@ const getOneDocente = (request, response, next) => {
 };
 
 const createDocente = (request, response, next) => {
-  model.insertDocente(request.body)
+  model.insertDocente(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newDocente: result.rows[0]});
   })

@@ -21,7 +21,7 @@ const getOneTipoPrograma = (request, response, next) => {
 };
 
 const createTipoPrograma = (request, response, next) => {
-  model.insertTipoPrograma(request.body)
+  model.insertTipoPrograma(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newTipoPrograma: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createTipoPrograma = (request, response, next) => {
 };
 
 const updateTipoPrograma = (request, response, next) => {
-  model.updateTipoPrograma(request.params.id_tipo, request.body)
+  model.updateTipoPrograma(request.params.id_tipo, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedTipoPrograma: result.rows[0]});
   })

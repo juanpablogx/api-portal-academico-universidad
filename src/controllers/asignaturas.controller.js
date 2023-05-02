@@ -21,7 +21,7 @@ const getOneAsignatura = (request, response, next) => {
 };
 
 const createAsignatura = (request, response, next) => {
-  model.insertAsignatura(request.body)
+  model.insertAsignatura(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newAsignatura: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createAsignatura = (request, response, next) => {
 };
 
 const updateAsignatura = (request, response, next) => {
-  model.updateAsignatura(request.params.id_asig, request.body)
+  model.updateAsignatura(request.params.id_asig, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedAsignatura: result.rows[0]});
   })

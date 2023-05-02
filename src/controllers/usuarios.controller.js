@@ -1,5 +1,5 @@
 const model = require('../models/usuarios.model');
-const CryptoJS = require('crypto-js');
+const { hash, generateAccessToken } = require('../tools');
 
 const getAllUsuarios = (request, response, next) => {
   model.selectUsuarios()
@@ -22,10 +22,14 @@ const getOneUsuario = (request, response, next) => {
 };
 
 const getOneUsuarioLogin = (request, response, next) => {
-  const { codigo_dni, password } = request.params.body;
-  model.selectOneUsuario(codigo_dni, password)
+  const { codigo_dni, password } = request.body.data;
+
+  const hashPassword = hash(password);
+
+  model.selectOneUsuario(codigo_dni, hashPassword)
     .then(result => {
-      response.json({usuarios: result.rows});
+      let token = result.rows.length == 1 ? generateAccessToken({ codigo_dni: result.rows[0].codigo_dni }) : null;
+      response.json({usuarios: result.rows, token});
     })
     .catch(err => {
       next(err);
@@ -34,14 +38,14 @@ const getOneUsuarioLogin = (request, response, next) => {
 
 const createUsuario = (request, response, next) => {
   let hashPassword;
-  if (request.body.password) {
-    hashPassword = CryptoJS.SHA256(request.body.password);
+  if (request.body.data.password) {
+    hashPassword = hash(request.body.data.password);
   } else {
-    hashPassword = CryptoJS.SHA256(request.body.codigo_dni);
+    hashPassword = hash(request.body.data.codigo_dni);
   }
-  request.body.password = hashPassword.toString(CryptoJS.enc.Hex);
+  request.body.data.password = hashPassword;
 
-  model.insertUsuario(request.body)
+  model.insertUsuario(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newUsuario: result.rows[0]});
   })
@@ -51,11 +55,11 @@ const createUsuario = (request, response, next) => {
 };
 
 const updateUsuario = (request, response, next) => {
-  if (request.body.password) {
-    let hashPassword = CryptoJS.SHA256(request.body.password);
-    request.body.password = hashPassword.toString(CryptoJS.enc.Hex);
+  if (request.body.data.password) {
+    let hashPassword = hash(request.body.data.password);
+    request.body.data.password = hashPassword;
   }
-  model.updateUsuario(request.params.codigo_dni, request.body)
+  model.updateUsuario(request.params.codigo_dni, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedUsuario: result.rows[0]});
   })

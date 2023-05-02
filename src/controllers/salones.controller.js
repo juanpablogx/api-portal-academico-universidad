@@ -21,7 +21,7 @@ const getOneSalon = (request, response, next) => {
 };
 
 const createSalon = (request, response, next) => {
-  model.insertSalon(request.body)
+  model.insertSalon(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newSalon: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createSalon = (request, response, next) => {
 };
 
 const updateSalon = (request, response, next) => {
-  model.updateSalon(request.params.id_salon, request.body)
+  model.updateSalon(request.params.id_salon, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedSalon: result.rows[0]});
   })

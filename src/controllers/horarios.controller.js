@@ -21,7 +21,7 @@ const getOneHorario = (request, response, next) => {
 };
 
 const createHorario = (request, response, next) => {
-  model.insertHorario(request.body)
+  model.insertHorario(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newHorario: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createHorario = (request, response, next) => {
 };
 
 const updateHorario = (request, response, next) => {
-  model.updateHorario(request.params.id_horario, request.body)
+  model.updateHorario(request.params.id_horario, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedHorario: result.rows[0]});
   })

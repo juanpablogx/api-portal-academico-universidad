@@ -21,7 +21,7 @@ const getOnePrograma = (request, response, next) => {
 };
 
 const createPrograma = (request, response, next) => {
-  model.insertPrograma(request.body)
+  model.insertPrograma(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newPrograma: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createPrograma = (request, response, next) => {
 };
 
 const updatePrograma = (request, response, next) => {
-  model.updatePrograma(request.params.id_prog, request.body)
+  model.updatePrograma(request.params.id_prog, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedPrograma: result.rows[0]});
   })

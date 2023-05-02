@@ -12,8 +12,8 @@ const selectTiposProgramas = (limit = 100) => {
   ];
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table}   
-    ORDER BY ${primaryKey}
     WHERE estado = true
+    ORDER BY ${primaryKey}
     LIMIT ${limit}
   `);
   return result;

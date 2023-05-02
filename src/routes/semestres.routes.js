@@ -1,16 +1,17 @@
 const { Router } = require('express');
 const { getAllSemestres, getOneSemestre, createSemestre, updateSemestre, deleteSemestre } = require('../controllers/semestres.controller');
+const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../controllers/base.controller');
 
 const router = Router();
 
-router.get('/semestres', getAllSemestres);
+router.get('/semestres', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllSemestres);
 
-router.get('/semestres/:id_semestre', getOneSemestre);
+router.get('/semestres/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneSemestre);
 
-router.post('/semestres', createSemestre);
+router.post('/semestres', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createSemestre);
 
-router.put('/semestres/:id_semestre', updateSemestre);
+router.put('/semestres/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), updateSemestre);
 
-router.delete('/semestres/:id_semestre', deleteSemestre);
+router.delete('/semestres/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteSemestre);
 
 module.exports = router;

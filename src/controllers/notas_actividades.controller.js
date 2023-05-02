@@ -3,10 +3,10 @@ const modelActividades = require('../models/actividades.model');
 const modelEstudiantesGrupos = require('../models/estudiantes_grupos.model');
 
 const validarAcvitidadMismoGrupo = (request, response, next) => {
-  const id_actividad = request.body?.id_actividad ?? request.params?.id_actividad;
-  const id_asig = request.body?.id_asig ?? request.params?.id_asig;
-  const id_semestre = request.body?.id_semestre ?? request.params?.id_semestre;
-  const codigo_estudiante = request.body?.codigo_estudiante ?? request.params?.codigo_estudiante;
+  const id_actividad = request.body.data?.id_actividad ?? request.params?.id_actividad;
+  const id_asig = request.body.data?.id_asig ?? request.params?.id_asig;
+  const id_semestre = request.body.data?.id_semestre ?? request.params?.id_semestre;
+  const codigo_estudiante = request.body.data?.codigo_estudiante ?? request.params?.codigo_estudiante;
 
   let actividad;
 
@@ -93,7 +93,7 @@ const getNotaActividadesOneGrupo = (request, response, next) => {
 };
 
 const createNotaActividad = (request, response, next) => {
-  model.insertNotaActividad(request.body)
+  model.insertNotaActividad(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newNotaActividad: result.rows[0]});
   })
@@ -104,7 +104,7 @@ const createNotaActividad = (request, response, next) => {
 
 const updateNotaActividad = (request, response, next) => {
   const { codigo_estudiante, id_asig, id_semestre, id_actividad } = request.params;
-  model.updateNotaActividad(codigo_estudiante, id_asig, id_semestre, id_actividad, request.body)
+  model.updateNotaActividad(codigo_estudiante, id_asig, id_semestre, id_actividad, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedNotaActividad: result.rows[0]});
   })

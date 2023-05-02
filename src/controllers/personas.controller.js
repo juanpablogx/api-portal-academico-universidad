@@ -21,7 +21,7 @@ const getOnePersona = (request, response, next) => {
 };
 
 const createPersona = (request, response, next) => {
-  model.insertPersona(request.body)
+  model.insertPersona(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newPersona: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createPersona = (request, response, next) => {
 };
 
 const updatePersona = (request, response, next) => {
-  model.updatePersona(request.params.codigo_dni, request.body)
+  model.updatePersona(request.params.codigo_dni, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedPersona: result.rows[0]});
   })

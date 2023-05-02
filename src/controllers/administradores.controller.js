@@ -21,7 +21,7 @@ const getOneAdministrador = (request, response, next) => {
 };
 
 const createAdministrador = (request, response, next) => {
-  model.insertAdministrador(request.body)
+  model.insertAdministrador(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newAdministrador: result.rows[0]});
   })

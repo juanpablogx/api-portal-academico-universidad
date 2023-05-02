@@ -33,7 +33,7 @@ const getEstudianteGruposOneSemestre = (request, response, next) => {
 };
 
 const createEstudianteGrupo = (request, response, next) => {
-  model.insertEstudianteGrupo(request.body)
+  model.insertEstudianteGrupo(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newEstudianteGrupo: result.rows[0]});
   })
@@ -44,7 +44,7 @@ const createEstudianteGrupo = (request, response, next) => {
 
 const updateEstudianteGrupo = (request, response, next) => {
   const { codigo_estudiante, id_asig, id_semestre } = request.params;
-  model.updateEstudianteGrupo(codigo_estudiante, id_asig, id_semestre, request.body)
+  model.updateEstudianteGrupo(codigo_estudiante, id_asig, id_semestre, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedEstudianteGrupo: result.rows[0]});
   })

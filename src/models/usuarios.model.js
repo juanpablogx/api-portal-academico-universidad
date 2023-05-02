@@ -48,7 +48,7 @@ const selectOneUsuario = (codigo_dni, password = null) => {
       ELSE NULL
     END AS tipo`
   ];
-  const wherePassword = password != null ? ` AND ${table}.password = ${password}`:``;
+  const wherePassword = password != null ? ` AND ${table}.password = '${password}'`:``;
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table}   
     INNER JOIN personas ON ${table}.codigo_dni = personas.codigo_dni

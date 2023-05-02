@@ -21,7 +21,7 @@ const getOneEstudiante = (request, response, next) => {
 };
 
 const createEstudiante = (request, response, next) => {
-  model.insertEstudiante(request.body)
+  model.insertEstudiante(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newEstudiante: result.rows[0]});
   })

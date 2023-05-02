@@ -21,7 +21,7 @@ const getOneSemestre = (request, response, next) => {
 };
 
 const createSemestre = (request, response, next) => {
-  model.insertSemestre(request.body)
+  model.insertSemestre(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newSemestre: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createSemestre = (request, response, next) => {
 };
 
 const updateSemestre = (request, response, next) => {
-  model.updateSemestre(request.params.id_semestre, request.body)
+  model.updateSemestre(request.params.id_semestre, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedSemestre: result.rows[0]});
   })

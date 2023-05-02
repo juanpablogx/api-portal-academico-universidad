@@ -1,18 +1,19 @@
 const { Router } = require('express');
-const { getAllGruposAsignaturas, getOneGrupoAsignatura, createGrupoAsignatura, updateGrupoAsignatura, deleteGrupoAsignatura, deleteGruposAsignaturasOneSemestre } = require('../controllers/grupos_asignaturas.controller')
+const { getAllGruposAsignaturas, getOneGrupoAsignatura, createGrupoAsignatura, updateGrupoAsignatura, deleteGrupoAsignatura, deleteGruposAsignaturasOneSemestre } = require('../controllers/grupos_asignaturas.controller');
+const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../controllers/base.controller');
 
 const router = Router();
 
-router.get('/grupos_asignaturas', getAllGruposAsignaturas);
+router.get('/grupos_asignaturas', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllGruposAsignaturas);
 
-router.get('/grupos_asignaturas/:id_asig/:id_semestre/:numero', getOneGrupoAsignatura);
+router.get('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneGrupoAsignatura);
 
-router.post('/grupos_asignaturas', createGrupoAsignatura);
+router.post('/grupos_asignaturas', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createGrupoAsignatura);
 
-router.put('/grupos_asignaturas/:id_asig/:id_semestre/:numero', updateGrupoAsignatura);
+router.put('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), updateGrupoAsignatura);
 
-router.delete('/grupos_asignaturas/:id_asig/:id_semestre/:numero', deleteGrupoAsignatura);
+router.delete('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGrupoAsignatura);
 
-router.delete('/grupos_asignaturas/semestre/:id_semestre', deleteGruposAsignaturasOneSemestre);
+router.delete('/grupos_asignaturas/semestre/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGruposAsignaturasOneSemestre);
 
 module.exports = router;

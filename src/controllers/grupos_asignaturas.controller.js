@@ -22,7 +22,7 @@ const getOneGrupoAsignatura = (request, response, next) => {
 };
 
 const createGrupoAsignatura = (request, response, next) => {
-  model.insertGrupoAsignatura(request.body)
+  model.insertGrupoAsignatura(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newGrupoAsignatura: result.rows[0]});
   })
@@ -33,7 +33,7 @@ const createGrupoAsignatura = (request, response, next) => {
 
 const updateGrupoAsignatura = (request, response, next) => {
   const { id_asig, id_semestre, numero } = request.params;
-  model.updateGrupoAsignatura(id_asig, id_semestre, numero, request.body)
+  model.updateGrupoAsignatura(id_asig, id_semestre, numero, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedGrupoAsignatura: result.rows[0]});
   })

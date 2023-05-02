@@ -7,6 +7,7 @@ const primaryKey = 'id_prog';
 
 const selectProgramas = (limit = 100) => {
   const columns_select = [
+    `${table}.id_prog`, 
     `${table}.codigo`, 
     `${table}.id_fac`, 
     `${table}.nombre AS nombre_programa`, 
@@ -27,6 +28,7 @@ const selectProgramas = (limit = 100) => {
 
 const selectOnePrograma = (id_prog) => {
   const columns_select = [
+    `${table}.id_prog`, 
     `${table}.codigo`, 
     `${table}.id_fac`, 
     `${table}.nombre AS nombre_programa`, 

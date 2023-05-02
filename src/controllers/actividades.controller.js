@@ -1,7 +1,7 @@
 const model = require('../models/actividades.model');
 
 const validarPorcentaje = (request, response, next) => {
-  const porcentaje = request.body?.porcentaje;
+  const porcentaje = request.body.data?.porcentaje;
   if (porcentaje === null || porcentaje === undefined) next();
   if (parseInt(porcentaje) >= 1 && parseInt(porcentaje) <= 100) {
     next();
@@ -31,7 +31,7 @@ const getOneActividad = (request, response, next) => {
 };
 
 const createActividad = (request, response, next) => {
-  model.insertActividad(request.body)
+  model.insertActividad(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newActividad: result.rows[0]});
   })
@@ -41,7 +41,7 @@ const createActividad = (request, response, next) => {
 };
 
 const updateActividad = (request, response, next) => {
-  model.updateActividad(request.params.id_actividad, request.body)
+  model.updateActividad(request.params.id_actividad, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedActividad: result.rows[0]});
   })

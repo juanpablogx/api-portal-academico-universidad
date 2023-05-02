@@ -21,7 +21,7 @@ const getOneFacultad = (request, response, next) => {
 };
 
 const createFacultad = (request, response, next) => {
-  model.insertFacultad(request.body)
+  model.insertFacultad(request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, newFacultad: result.rows[0]});
   })
@@ -31,7 +31,7 @@ const createFacultad = (request, response, next) => {
 };
 
 const updateFacultad = (request, response, next) => {
-  model.updateFacultad(request.params.id_fac, request.body)
+  model.updateFacultad(request.params.id_fac, request.body.data)
   .then(result => {
     response.json({rowCount: result.rowCount, updatedFacultad: result.rows[0]});
   })
