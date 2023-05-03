@@ -32,6 +32,17 @@ const getEstudianteGruposOneSemestre = (request, response, next) => {
     });
 };
 
+const getEstudiantesOneGrupo = (request, response, next) => {
+  const { id_asig, id_semestre, numero_grupo } = request.params;
+  model.selectEstudiantesOneGrupo(id_asig, id_semestre, numero_grupo)
+    .then(result => {
+      response.json({estudiantesGrupos: result.rows});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
 const createEstudianteGrupo = (request, response, next) => {
   model.insertEstudianteGrupo(request.body.data)
   .then(result => {
@@ -70,5 +81,6 @@ module.exports = {
   getEstudianteGruposOneSemestre,
   createEstudianteGrupo,
   updateEstudianteGrupo,
-  deleteEstudianteGrupo
+  deleteEstudianteGrupo,
+  getEstudiantesOneGrupo
 };

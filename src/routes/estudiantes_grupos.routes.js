@@ -1,18 +1,21 @@
 const { Router } = require('express');
-const { getAllEstudiantesGrupos, getOneEstudianteGrupo, getEstudianteGruposOneSemestre, createEstudianteGrupo, updateEstudianteGrupo, deleteEstudianteGrupo } = require('../controllers/estudiantes_grupos.controller')
+const { getAllEstudiantesGrupos, getOneEstudianteGrupo, getEstudianteGruposOneSemestre, createEstudianteGrupo, updateEstudianteGrupo, deleteEstudianteGrupo, getEstudiantesOneGrupo } = require('../controllers/estudiantes_grupos.controller')
+const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../controllers/base.controller');
 
 const router = Router();
 
-router.get('/estudiantes_grupos', getAllEstudiantesGrupos);
+router.get('/estudiantes_grupos', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllEstudiantesGrupos);
 
-router.get('/estudiantes_grupos/:codigo_estudiante/semestre/:id_semestre', getEstudianteGruposOneSemestre);
+router.get('/estudiantes_grupos/:codigo_estudiante/semestre/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'estudiante']), getEstudianteGruposOneSemestre);
 
-router.get('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', getOneEstudianteGrupo);
+router.get('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'estudiante']), getOneEstudianteGrupo);
 
-router.post('/estudiantes_grupos', createEstudianteGrupo);
+router.get('/estudiantes_grupos/grupo/:id_asig/:id_semestre/:numero_grupo', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'docente']), getEstudiantesOneGrupo);
 
-router.put('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', updateEstudianteGrupo);
+router.post('/estudiantes_grupos', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createEstudianteGrupo);
 
-router.delete('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', deleteEstudianteGrupo);
+router.put('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), updateEstudianteGrupo);
+
+router.delete('/estudiantes_grupos/:codigo_estudiante/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteEstudianteGrupo);
 
 module.exports = router;

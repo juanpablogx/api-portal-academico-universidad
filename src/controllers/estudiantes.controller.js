@@ -10,6 +10,17 @@ const getAllEstudiantes = (request, response, next) => {
     });
 };
 
+const getEstudiantesNotInGrupo = (request, response, next) => {
+  const { id_asig, id_semestre } = request.params;
+  model.selectEstudiantesNotInGrupo(id_asig, id_semestre)
+    .then(result => {
+      response.json({estudiantes: result.rows});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
 const getOneEstudiante = (request, response, next) => {
   model.selectOneEstudiante(request.params.codigo_dni)
     .then(result => {
@@ -44,5 +55,6 @@ module.exports = {
   getAllEstudiantes,
   getOneEstudiante,
   createEstudiante,
-  deleteEstudiante
+  deleteEstudiante,
+  getEstudiantesNotInGrupo
 };

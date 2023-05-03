@@ -35,7 +35,7 @@ const selectOneEstudianteGrupo = (codigo_estudiante, id_asig, id_semestre) => {
     `${table}.numero_grupo`, 
     `${table}.promedio`,
     `asignaturas.nombre AS nombre_asignatura`,
-    `asignaturas.creditos AS creditos_asignatura`
+    `asignaturas.creditos AS creditos_asignatura`,
   ];
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table} 
@@ -43,6 +43,36 @@ const selectOneEstudianteGrupo = (codigo_estudiante, id_asig, id_semestre) => {
     INNER JOIN grupos_asignaturas ON ${table}.id_asig = grupos_asignaturas.id_asig AND ${table}.id_semestre = grupos_asignaturas.id_semestre AND ${table}.numero_grupo = grupos_asignaturas.numero
     INNER JOIN asignaturas ON grupos_asignaturas.id_asig = asignaturas.id_asig
     WHERE ${table}.${primaryKey[0]} = '${codigo_estudiante}' AND ${table}.${primaryKey[1]} = ${id_asig} AND ${table}.${primaryKey[2]} = ${id_semestre} AND ${table}.estado = true
+  `);
+  return result;
+};
+
+const selectEstudiantesOneGrupo = (id_asig, id_semestre, numero_grupo) => {
+  const columns_select = [
+    `${table}.codigo_estudiante`, 
+    `${table}.id_asig`, 
+    `${table}.id_semestre`, 
+    `${table}.numero_grupo`, 
+    `${table}.promedio`,
+    `CONCAT(
+      personas.nombre1, 
+      ' ', 
+      CASE 
+        WHEN personas.nombre2 IS NOT NULL THEN CONCAT(personas.nombre2, ' ')
+        ELSE ''
+      END, 
+      personas.apellido1,
+      CASE 
+        WHEN personas.apellido2 IS NOT NULL THEN CONCAT(' ', personas.apellido2)
+        ELSE ''
+      END
+    ) AS nombre_completo_estudiante`,
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table} 
+    INNER JOIN estudiantes ON ${table}.codigo_estudiante = estudiantes.codigo_dni
+    INNER JOIN personas ON estudiantes.codigo_dni = personas.codigo_dni
+    WHERE ${table}.${primaryKey[1]} = ${id_asig} AND ${table}.${primaryKey[2]} = ${id_semestre} AND ${table}.numero_grupo = ${numero_grupo} AND ${table}.estado = true
   `);
   return result;
 };
@@ -91,5 +121,6 @@ module.exports = {
   selectEstudianteGruposOneSemestre,
   insertEstudianteGrupo,
   updateEstudianteGrupo,
-  deleteEstudianteGrupo
+  deleteEstudianteGrupo,
+  selectEstudiantesOneGrupo
 };

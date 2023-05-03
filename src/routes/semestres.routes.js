@@ -4,9 +4,9 @@ const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../contro
 
 const router = Router();
 
-router.get('/semestres', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllSemestres);
+router.get('/semestres', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'docente', 'estudiante']), getAllSemestres);
 
-router.get('/semestres/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneSemestre);
+router.get('/semestres/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'docente', 'estudiante']), getOneSemestre);
 
 router.post('/semestres', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createSemestre);
 

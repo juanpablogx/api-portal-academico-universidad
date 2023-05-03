@@ -63,7 +63,7 @@ const selectGruposAsignaturasHorariosOneSemestre = (id_semestre, codigo_docente 
 
   let condCodigoDocente = '';
   if (codigo_docente !== null) {
-    condCodigoDocente = `AND grupos_asignaturas.codigo_docente = ${codigo_docente}`;
+    condCodigoDocente = `AND grupos_asignaturas.codigo_docente = '${codigo_docente}'`;
   }
 
   const result = db.query(`

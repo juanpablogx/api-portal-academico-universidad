@@ -62,13 +62,73 @@ const selectNotaActividadesOneGrupo = (id_asig, id_semestre, numero_grupo) => {
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN estudiantes_grupos ON ${table}.id_asig = estudiantes_grupos.id_asig AND ${table}.id_semestre = estudiantes_grupos.id_semestre AND ${table}.codigo_estudiante = estudiantes_grupos.codigo_estudiante
-    INNER JOIN grupos_asignaturas ON estudiantes_grupos.id_asig = grupos_asignaturas.id_asig AND estudiantes_grupos.id_semestre = grupos_asignaturas.id_semestre AND estudiantes_grupos.codigo_estudiante = grupos_asignaturas.codigo_estudiante AND estudiantes_grupos.numero_grupo = grupos_asignaturas.numero
+    INNER JOIN grupos_asignaturas ON estudiantes_grupos.id_asig = grupos_asignaturas.id_asig AND estudiantes_grupos.id_semestre = grupos_asignaturas.id_semestre AND estudiantes_grupos.numero_grupo = grupos_asignaturas.numero
     INNER JOIN actividades ON ${table}.id_actividad = actividades.id_actividad
     INNER JOIN estudiantes ON estudiantes_grupos.codigo_estudiante = estudiantes.codigo_dni
     INNER JOIN personas ON estudiantes.codigo_dni = personas.codigo_dni
     WHERE grupos_asignaturas.id_asig = ${id_asig} AND grupos_asignaturas.id_semestre = ${id_semestre} AND grupos_asignaturas.numero = ${numero_grupo} AND ${table}.estado = true
+    ORDER BY nombre_completo_estudiante
+  `);
+  return result;
+};
+
+const selectNotaActividadOneGrupo = (id_asig, id_semestre, numero_grupo, id_actividad) => {
+  const columns_select = [
+    `${table}.codigo_estudiante`, 
+    `CONCAT(
+      personas.apellido1, 
+      ' ', 
+      CASE 
+        WHEN personas.apellido2 IS NOT NULL THEN CONCAT(personas.apellido2, ' ')
+        ELSE ''
+      END, 
+      personas.nombre1,
+      CASE 
+        WHEN personas.nombre2 IS NOT NULL THEN CONCAT(' ', personas.nombre2)
+        ELSE ''
+      END
+    ) AS nombre_completo_estudiante`,
+    `${table}.id_asig`, 
+    `${table}.id_semestre`,
+    `estudiantes_grupos.numero_grupo`,
+    `${table}.id_actividad`,
+    `${table}.nota`,
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table} 
+    INNER JOIN estudiantes_grupos ON ${table}.id_asig = estudiantes_grupos.id_asig AND ${table}.id_semestre = estudiantes_grupos.id_semestre AND ${table}.codigo_estudiante = estudiantes_grupos.codigo_estudiante
+    INNER JOIN estudiantes ON estudiantes_grupos.codigo_estudiante = estudiantes.codigo_dni
+    INNER JOIN personas ON estudiantes.codigo_dni = personas.codigo_dni
+    WHERE ${table}.id_asig = ${id_asig} AND ${table}.id_semestre = ${id_semestre} AND estudiantes_grupos.numero_grupo = ${numero_grupo} AND ${table}.id_actividad = ${id_actividad} AND ${table}.estado = true
     ORDER BY ${primaryKey.map(value => `${table}.${value}`).join(', ')}
   `);
+  return result;
+};
+
+const selectNotasActividadesOneEstudianteOneGrupo = (id_asig, id_semestre, numero_grupo, codigo_estudiante) => {
+  const columns_select = [
+    `${table}.id_asig`, 
+    `${table}.id_semestre`,
+    `estudiantes_grupos.numero_grupo`,
+    `${table}.id_actividad`,
+    `${table}.nota`,
+    `actividades.descripcion`,
+    `actividades.porcentaje`,
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table} 
+    INNER JOIN estudiantes_grupos ON ${table}.id_asig = estudiantes_grupos.id_asig AND ${table}.id_semestre = estudiantes_grupos.id_semestre AND ${table}.codigo_estudiante = estudiantes_grupos.codigo_estudiante
+    INNER JOIN actividades ON ${table}.id_actividad = actividades.id_actividad
+    INNER JOIN estudiantes ON estudiantes_grupos.codigo_estudiante = estudiantes.codigo_dni
+    INNER JOIN personas ON estudiantes.codigo_dni = personas.codigo_dni
+    WHERE ${table}.id_asig = ${id_asig} AND ${table}.id_semestre = ${id_semestre} AND estudiantes_grupos.numero_grupo = ${numero_grupo} AND ${table}.codigo_estudiante = '${codigo_estudiante}' AND ${table}.estado = true
+    ORDER BY ${primaryKey.map(value => `${table}.${value}`).join(', ')}
+  `);
+  return result;
+};
+
+const selectPromedioNotasActividadesOneEstudianteOneGrupo = (codigo_estudiante, id_asig, id_semestre) => {
+  const result = db.query(`SELECT SUM(TRUNC((na.nota * (a.porcentaje / 100)), 2)) AS promedio FROM notas_actividades AS na INNER JOIN actividades AS a ON na.id_actividad = a.id_actividad WHERE na.codigo_estudiante = '${codigo_estudiante}' AND na.id_asig = ${id_asig} AND na.id_semestre = ${id_semestre}`);
   return result;
 };
 
@@ -96,5 +156,8 @@ module.exports = {
   selectNotaActividadesOneGrupo,
   insertNotaActividad,
   updateNotaActividad,
-  deleteNotaActividad
+  deleteNotaActividad,
+  selectNotaActividadOneGrupo,
+  selectNotasActividadesOneEstudianteOneGrupo,
+  selectPromedioNotasActividadesOneEstudianteOneGrupo
 };

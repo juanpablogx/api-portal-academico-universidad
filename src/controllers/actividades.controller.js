@@ -10,8 +10,40 @@ const validarPorcentaje = (request, response, next) => {
   }
 }
 
+const validarSumaPorcentaje = (request, response, next) => {
+  const porcentaje = request.body.data?.porcentaje;
+  const id_asig = request.body.data?.id_asig;
+  const id_semestre = request.body.data?.id_semestre;
+  const numero_grupo = request.body.data?.numero_grupo;
+
+  model.selectSumaPorcentajeActividadesOneGrupo(id_asig, id_semestre, numero_grupo)
+    .then(result => {
+      let total = parseInt(result.rows[0].suma) + porcentaje;
+      if (total > 100) {
+        next(Error(`El porcentaje total del grupo superó el 100% en un ${total - 100}%`));
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+
+}
+
 const getAllActividades = (request, response, next) => {
   model.selectActividades()
+    .then(result => {
+      response.json({actividades: result.rows});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+const getActividadesOneGrupo = (request, response, next) => {
+  const { id_asig, id_semestre, numero_grupo } = request.params;
+  model.selectActividadesOneGrupo(id_asig, id_semestre, numero_grupo)
     .then(result => {
       response.json({actividades: result.rows});
     })
@@ -66,5 +98,7 @@ module.exports = {
   createActividad,
   updateActividad,
   deleteActividad,
-  validarPorcentaje
+  validarPorcentaje,
+  getActividadesOneGrupo,
+  validarSumaPorcentaje
 };

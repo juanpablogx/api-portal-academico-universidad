@@ -32,7 +32,7 @@ const selectGruposAsignaturas = (limit = 100) => {
   return result;
 };
 
-const selectOneGrupoAsignatura = (id_asig, id_semestre, numero) => {
+const selectOneGrupoAsignatura = (id_asig, id_semestre, numero = null) => {
   const columns_select = [
     `${table}.id_asig`, 
     `${table}.id_semestre`, 
@@ -45,6 +45,12 @@ const selectOneGrupoAsignatura = (id_asig, id_semestre, numero) => {
     `usuarios.correo_inst AS correo_docente`,
     `CONCAT(personas.nombre1, ' ', personas.nombre2, ' ', personas.apellido1, ' ', personas.apellido2) AS nombre_docente`
   ];
+
+  let condNumero = '';
+  if (numero !== null) {
+    condNumero = `AND ${table}.${primaryKey[2]} = ${numero}`;
+  }
+
   const result = db.query(`
     SELECT ${columns_select.join(', ')} FROM ${table} 
     INNER JOIN asignaturas ON ${table}.id_asig = asignaturas.id_asig
@@ -52,7 +58,7 @@ const selectOneGrupoAsignatura = (id_asig, id_semestre, numero) => {
     INNER JOIN docentes ON ${table}.codigo_docente = docentes.codigo_dni
     INNER JOIN usuarios ON docentes.codigo_dni = usuarios.codigo_dni
     INNER JOIN personas ON usuarios.codigo_dni = personas.codigo_dni
-    WHERE ${table}.${primaryKey[0]} = ${id_asig} AND ${table}.${primaryKey[1]} = ${id_semestre} AND ${table}.${primaryKey[2]} = ${numero} AND ${table}.estado = true
+    WHERE ${table}.${primaryKey[0]} = ${id_asig} AND ${table}.${primaryKey[1]} = ${id_semestre} ${condNumero} AND ${table}.estado = true
   `);
   return result;
 };

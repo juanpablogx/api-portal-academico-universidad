@@ -21,6 +21,17 @@ const getOneGrupoAsignatura = (request, response, next) => {
     });
 };
 
+const getGruposOneAsignaturaOneSemestre = (request, response, next) => {
+  const { id_asig, id_semestre } = request.params;
+  model.selectOneGrupoAsignatura(id_asig, id_semestre)
+    .then(result => {
+      response.json({gruposAsignaturas: result.rows});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
 const createGrupoAsignatura = (request, response, next) => {
   model.insertGrupoAsignatura(request.body.data)
   .then(result => {
@@ -70,5 +81,6 @@ module.exports = {
   createGrupoAsignatura,
   updateGrupoAsignatura,
   deleteGrupoAsignatura,
-  deleteGruposAsignaturasOneSemestre
+  deleteGruposAsignaturasOneSemestre,
+  getGruposOneAsignaturaOneSemestre
 };

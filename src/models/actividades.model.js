@@ -5,6 +5,17 @@ const table = 'actividades';
 const columns = ['id_actividad', 'id_asig', 'id_semestre', 'numero_grupo', 'descripcion', 'porcentaje', 'estado'];
 const primaryKey = 'id_actividad';
 
+const selectSumaPorcentajeActividadesOneGrupo = (id_asig, id_semestre, numero_grupo) => {
+  const columns_select = [
+    `SUM(porcentaje) AS suma`, 
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table} 
+    WHERE id_asig = ${id_asig} AND id_semestre = ${id_semestre} AND numero_grupo = ${numero_grupo} AND estado = true
+  `);
+  return result;
+} 
+
 const selectActividades = (limit = 100) => {
   const columns_select = [
     `${table}.id_actividad`, 
@@ -20,6 +31,24 @@ const selectActividades = (limit = 100) => {
     WHERE ${table}.estado = true
     ORDER BY ${primaryKey}
     LIMIT ${limit}
+  `);
+  return result;
+};
+
+const selectActividadesOneGrupo = (id_asig, id_semestre, numero_grupo) => {
+  const columns_select = [
+    `${table}.id_actividad`, 
+    `${table}.id_asig`, 
+    `${table}.id_semestre`, 
+    `${table}.numero_grupo`,
+    `${table}.descripcion`,
+    `${table}.porcentaje`
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table} 
+    INNER JOIN grupos_asignaturas ON ${table}.id_asig = grupos_asignaturas.id_asig AND ${table}.id_semestre = grupos_asignaturas.id_semestre AND ${table}.numero_grupo = grupos_asignaturas.numero
+    WHERE ${table}.id_asig = ${id_asig} AND ${table}.id_semestre = ${id_semestre} AND ${table}.numero_grupo = ${numero_grupo} AND ${table}.estado = true
+    ORDER BY ${primaryKey}
   `);
   return result;
 };
@@ -65,5 +94,7 @@ module.exports = {
   selectOneActividad,
   insertActividad,
   updateActividad,
-  deleteActividad
+  deleteActividad,
+  selectActividadesOneGrupo,
+  selectSumaPorcentajeActividadesOneGrupo
 };

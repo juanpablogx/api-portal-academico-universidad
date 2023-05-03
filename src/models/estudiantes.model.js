@@ -41,6 +41,41 @@ const selectEstudiantes = (limit = 100) => {
   return result;
 };
 
+const selectEstudiantesNotInGrupo = (id_asig, id_semestre) => {
+  const columns_select = [
+    `${table}.codigo_dni`, 
+    `usuarios.correo_inst`,
+    `personas.nombre1`, 
+    `personas.nombre2`, 
+    `personas.apellido1`,
+    `personas.apellido2`,
+    `personas.telefono`,
+    `personas.celular`,
+    `personas.correo_pers`,
+    `CONCAT(
+      personas.nombre1, 
+      ' ', 
+      CASE 
+        WHEN personas.nombre2 IS NOT NULL THEN CONCAT(personas.nombre2, ' ')
+        ELSE ''
+      END, 
+      personas.apellido1,
+      CASE 
+        WHEN personas.apellido2 IS NOT NULL THEN CONCAT(' ', personas.apellido2)
+        ELSE ''
+      END
+    ) AS nombre_completo`
+  ];
+  const result = db.query(`
+    SELECT ${columns_select.join(', ')} FROM ${table}
+    INNER JOIN usuarios ON ${table}.codigo_dni = usuarios.codigo_dni
+    INNER JOIN personas ON usuarios.codigo_dni = personas.codigo_dni
+    WHERE ${table}.estado = true AND NOT EXISTS (SELECT codigo_estudiante FROM estudiantes_grupos WHERE codigo_estudiante = ${table}.codigo_dni AND id_asig = ${id_asig} AND id_semestre = ${id_semestre})
+    ORDER BY ${primaryKey}
+  `);
+  return result;
+};
+
 const selectOneEstudiante = (codigo_dni) => {
   const columns_select = [
     `${table}.codigo_dni`, 
@@ -91,5 +126,6 @@ module.exports = {
   selectEstudiantes,
   selectOneEstudiante,
   insertEstudiante,
-  deleteEstudiante
+  deleteEstudiante,
+  selectEstudiantesNotInGrupo
 };

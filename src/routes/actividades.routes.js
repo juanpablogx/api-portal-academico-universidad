@@ -1,16 +1,20 @@
 const { Router } = require('express');
-const { getAllActividades, getOneActividad, createActividad, updateActividad, deleteActividad, validarPorcentaje } = require('../controllers/actividades.controller')
+const { getAllActividades, getOneActividad, createActividad, updateActividad, deleteActividad, validarPorcentaje, getActividadesOneGrupo, validarSumaPorcentaje } = require('../controllers/actividades.controller');
+const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../controllers/base.controller');
 
 const router = Router();
 
-router.get('/actividades', getAllActividades);
+router.get('/actividades', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), getAllActividades);
 
-router.get('/actividades/:id_actividad', getOneActividad);
+router.get('/actividades/:id_actividad', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), getOneActividad);
 
-router.post('/actividades', validarPorcentaje, createActividad);
 
-router.put('/actividades/:id_actividad', validarPorcentaje, updateActividad);
+router.get('/actividades/grupo_asignatura/:id_asig/:id_semestre/:numero_grupo', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), getActividadesOneGrupo);
 
-router.delete('/actividades/:id_actividad', deleteActividad);
+router.post('/actividades', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), validarPorcentaje, validarSumaPorcentaje, createActividad);
+
+router.put('/actividades/:id_actividad', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), validarPorcentaje, validarSumaPorcentaje, updateActividad);
+
+router.delete('/actividades/:id_actividad', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), deleteActividad);
 
 module.exports = router;

@@ -85,6 +85,28 @@ const getNotaActividadesOneGrupo = (request, response, next) => {
 
         estudiantesNotas[indexEstudiantes].notas.push({id_actividad: value.id_actividad, nota: value.nota, descripcion: value.descripcion, porcentaje: value.porcentaje});
       });
+      response.json({notasActividades: estudiantesNotas});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+const getNotasActividadOneGrupo = (request, response, next) => {
+  const { id_asig, id_semestre, numero_grupo, id_actividad } = request.params;
+  model.selectNotaActividadOneGrupo(id_asig, id_semestre, numero_grupo, id_actividad)
+    .then(result => {
+      response.json({notasActividades: result.rows});
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+const getNotasActividadesOneEstudianteOneGrupo = (request, response, next) => {
+  const { id_asig, id_semestre, numero_grupo, codigo_estudiante } = request.params;
+  model.selectNotasActividadesOneEstudianteOneGrupo(id_asig, id_semestre, numero_grupo, codigo_estudiante)
+    .then(result => {
       response.json({notasActividades: result.rows});
     })
     .catch(err => {
@@ -104,9 +126,20 @@ const createNotaActividad = (request, response, next) => {
 
 const updateNotaActividad = (request, response, next) => {
   const { codigo_estudiante, id_asig, id_semestre, id_actividad } = request.params;
+  let objRespUpdate = {};
   model.updateNotaActividad(codigo_estudiante, id_asig, id_semestre, id_actividad, request.body.data)
   .then(result => {
-    response.json({rowCount: result.rowCount, updatedNotaActividad: result.rows[0]});
+    objRespUpdate = {rowCount: result.rowCount, updatedNotaActividad: result.rows[0]};
+    return model.selectPromedioNotasActividadesOneEstudianteOneGrupo(codigo_estudiante, id_asig, id_semestre);
+  })
+  .then(result => {
+    console.log(result.rows[0].promedio);
+    return modelEstudiantesGrupos.updateEstudianteGrupo(codigo_estudiante, id_asig, id_semestre, {
+      promedio: result.rows[0].promedio
+    });
+  })
+  .then(result => {
+    response.json(objRespUpdate);
   })
   .catch(err => {
     next(err);
@@ -131,5 +164,7 @@ module.exports = {
   createNotaActividad,
   updateNotaActividad,
   deleteNotaActividad,
-  validarAcvitidadMismoGrupo
+  validarAcvitidadMismoGrupo,
+  getNotasActividadOneGrupo,
+  getNotasActividadesOneEstudianteOneGrupo
 };

@@ -8,7 +8,7 @@ router.get('/grupos_asignaturas_horarios', authenticateTokenUsuario, authenticat
 
 router.get('/grupos_asignaturas_horarios/semestre/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getGruposAsignaturasHorariosOneSemestre);
 
-router.get('/grupos_asignaturas_horarios/semestre/:id_semestre/docente/:codigo_docente', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getGruposAsignaturasHorariosOneSemestre);
+router.get('/grupos_asignaturas_horarios/semestre/:id_semestre/docente/:codigo_docente', authenticateTokenUsuario, authenticateTipoUsuario(['administrador', 'docente']), getGruposAsignaturasHorariosOneSemestre);
 
 router.get('/grupos_asignaturas_horarios/:id_asig/:id_semestre/:numero_grupo', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneGrupoAsignaturaHorario);
 
