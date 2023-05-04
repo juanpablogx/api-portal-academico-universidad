@@ -14,7 +14,7 @@ router.get('/notas_actividades/grupo_asignaturas/:id_asig/:id_semestre/:numero_g
 
 router.get('/notas_actividades/:id_actividad/:codigo_estudiante/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['docente', 'estudiante']), getOneNotaActividad);
 
-router.post('/notas_actividades', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), validarAcvitidadMismoGrupo, createNotaActividad);
+router.post('/notas_actividades', authenticateTokenUsuario, authenticateTipoUsuario(['docente', 'administrador']), validarAcvitidadMismoGrupo, createNotaActividad);
 
 router.put('/notas_actividades/:id_actividad/:codigo_estudiante/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), validarAcvitidadMismoGrupo, updateNotaActividad);
 

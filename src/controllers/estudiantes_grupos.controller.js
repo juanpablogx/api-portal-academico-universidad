@@ -1,5 +1,23 @@
 const model = require('../models/estudiantes_grupos.model');
 
+const verificarMaxEstudiantesOneGrupo = (request, response, next) => {
+  const id_asig = request.body.data?.id_asig;
+  const id_semestre = request.body.data?.id_semestre;
+  const numero_grupo = request.body.data?.numero_grupo;
+
+  model.selectEstudiantesOneGrupo(id_asig, id_semestre, numero_grupo)
+    .then(result => {
+      if (result.rows.length < 35) {
+        next();
+      } else {
+        next(Error('Se sobrepasó el límite de estudiantes (máx. 35)'));
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
 const getAllEstudiantesGrupos = (request, response, next) => {
   model.selectEstudiantesGrupos()
     .then(result => {
@@ -82,5 +100,6 @@ module.exports = {
   createEstudianteGrupo,
   updateEstudianteGrupo,
   deleteEstudianteGrupo,
-  getEstudiantesOneGrupo
+  getEstudiantesOneGrupo,
+  verificarMaxEstudiantesOneGrupo
 };

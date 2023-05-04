@@ -9,7 +9,7 @@ router.get('/actividades', authenticateTokenUsuario, authenticateTipoUsuario(['d
 router.get('/actividades/:id_actividad', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), getOneActividad);
 
 
-router.get('/actividades/grupo_asignatura/:id_asig/:id_semestre/:numero_grupo', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), getActividadesOneGrupo);
+router.get('/actividades/grupo_asignatura/:id_asig/:id_semestre/:numero_grupo', authenticateTokenUsuario, authenticateTipoUsuario(['docente', 'administrador']), getActividadesOneGrupo);
 
 router.post('/actividades', authenticateTokenUsuario, authenticateTipoUsuario(['docente']), validarPorcentaje, validarSumaPorcentaje, createActividad);
 
