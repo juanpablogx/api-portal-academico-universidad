@@ -23,37 +23,37 @@ const actividadesRouter = require('./routes/actividades.routes');
 const estudiantesGruposRouter = require('./routes/estudiantes_grupos.routes');
 const notasActividadesRouter = require('./routes/notas_actividades.routes');
 
-app.get('/', (request, response) => {
-  response.send({
-    message: 'Hola bienvenido a la app portal académico'
-  });
-});
-
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use(programasAcademicosRouter);
-app.use(facultadesRouter);
-app.use(tiposProgramasRouter);
-app.use(asignaturasRouter);
-app.use(semestresRouter);
-app.use(salonesRouter);
-app.use(horariosRouter);
-app.use(personasRouter);
-app.use(usuariosRouter);
-app.use(administradoresRouter);
-app.use(docentesRouter);
-app.use(estudiantesRouter);
-app.use(gruposAsignaturasRouter);
-app.use(gruposAsignaturasHorariosRouter);
-app.use(actividadesRouter);
-app.use(estudiantesGruposRouter);
-app.use(notasActividadesRouter);
+app.use('/programas_academicos', programasAcademicosRouter);
+app.use('/facultades', facultadesRouter);
+app.use('/tipos_programas', tiposProgramasRouter);
+app.use('/asignaturas', asignaturasRouter);
+app.use('/semestres', semestresRouter);
+app.use('/salones', salonesRouter);
+app.use('/horarios', horariosRouter);
+app.use('/personas', personasRouter);
+app.use('/usuarios', usuariosRouter);
+app.use('/administradores', administradoresRouter);
+app.use('/docentes', docentesRouter);
+app.use('/estudiantes', estudiantesRouter);
+app.use('/grupos_asignaturas', gruposAsignaturasRouter);
+app.use('/grupos_asignaturas_horarios', gruposAsignaturasHorariosRouter);
+app.use('/actividades', actividadesRouter);
+app.use('/estudiantes_grupos', estudiantesGruposRouter);
+app.use('/notas_actividades', notasActividadesRouter);
 
 app.use((err, request, response, next) => {
   console.log(err.message);
   response.status(500).json({message: err.message});
+});
+
+app.get('/', (request, response) => {
+  response.send({
+    message: 'Hola bienvenido a la app portal académico'
+  });
 });
 
 app.listen(port, () => {

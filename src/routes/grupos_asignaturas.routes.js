@@ -4,18 +4,18 @@ const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../contro
 
 const router = Router();
 
-router.get('/grupos_asignaturas', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllGruposAsignaturas);
+router.get('/', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getAllGruposAsignaturas);
 
-router.get('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneGrupoAsignatura);
+router.get('/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getOneGrupoAsignatura);
 
-router.get('/grupos_asignaturas/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getGruposOneAsignaturaOneSemestre);
+router.get('/:id_asig/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), getGruposOneAsignaturaOneSemestre);
 
-router.post('/grupos_asignaturas', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createGrupoAsignatura);
+router.post('/', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), createGrupoAsignatura);
 
-router.put('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), updateGrupoAsignatura);
+router.put('/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), updateGrupoAsignatura);
 
-router.delete('/grupos_asignaturas/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGrupoAsignatura);
+router.delete('/:id_asig/:id_semestre/:numero', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGrupoAsignatura);
 
-router.delete('/grupos_asignaturas/semestre/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGruposAsignaturasOneSemestre);
+router.delete('/semestre/:id_semestre', authenticateTokenUsuario, authenticateTipoUsuario(['administrador']), deleteGruposAsignaturasOneSemestre);
 
 module.exports = router;

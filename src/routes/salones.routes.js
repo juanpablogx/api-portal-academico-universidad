@@ -3,14 +3,14 @@ const { getAllSalones, getOneSalon, createSalon, updateSalon, deleteSalon } = re
 
 const router = Router();
 
-router.get('/salones', getAllSalones);
+router.get('/', getAllSalones);
 
-router.get('/salones/:id_salon', getOneSalon);
+router.get('/:id_salon', getOneSalon);
 
-router.post('/salones', createSalon);
+router.post('/', createSalon);
 
-router.put('/salones/:id_salon', updateSalon);
+router.put('/:id_salon', updateSalon);
 
-router.delete('/salones/:id_salon', deleteSalon);
+router.delete('/:id_salon', deleteSalon);
 
 module.exports = router;

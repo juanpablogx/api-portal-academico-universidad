@@ -3,14 +3,14 @@ const { getAllHorarios, getOneHorario, createHorario, updateHorario, deleteHorar
 
 const router = Router();
 
-router.get('/horarios', getAllHorarios);
+router.get('/', getAllHorarios);
 
-router.get('/horarios/:id_horario', getOneHorario);
+router.get('/:id_horario', getOneHorario);
 
-router.post('/horarios', createHorario);
+router.post('/', createHorario);
 
-router.put('/horarios/:id_horario', updateHorario);
+router.put('/:id_horario', updateHorario);
 
-router.delete('/horarios/:id_horario', deleteHorario);
+router.delete('/:id_horario', deleteHorario);
 
 module.exports = router;

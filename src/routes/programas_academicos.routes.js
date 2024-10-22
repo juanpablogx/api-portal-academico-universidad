@@ -4,14 +4,14 @@ const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../contro
 
 const router = Router();
 
-router.get('/programas_academicos', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllProgramas);
+router.get('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllProgramas);
 
-router.get('/programas_academicos/:id_prog', getOnePrograma);
+router.get('/:id_prog', getOnePrograma);
 
-router.post('/programas_academicos', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createPrograma);
+router.post('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createPrograma);
 
-router.put('/programas_academicos/:id_prog', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), updatePrograma);
+router.put('/:id_prog', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), updatePrograma);
 
-router.delete('/programas_academicos/:id_prog', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deletePrograma);
+router.delete('/:id_prog', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deletePrograma);
 
 module.exports = router;

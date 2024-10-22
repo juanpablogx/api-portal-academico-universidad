@@ -4,12 +4,12 @@ const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../contro
 
 const router = Router();
 
-router.get('/docentes', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllDocentes);
+router.get('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllDocentes);
 
-router.get('/docentes/:codigo_dni', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getOneDocente);
+router.get('/:codigo_dni', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getOneDocente);
 
-router.post('/docentes', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createDocente);
+router.post('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createDocente);
 
-router.delete('/docentes/:codigo_dni', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deleteDocente);
+router.delete('/:codigo_dni', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deleteDocente);
 
 module.exports = router;

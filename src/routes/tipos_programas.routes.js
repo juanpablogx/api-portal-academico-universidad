@@ -4,14 +4,14 @@ const { authenticateTokenUsuario, authenticateTipoUsuario } = require('../contro
 
 const router = Router();
 
-router.get('/tipos_programas', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllTiposProgramas);
+router.get('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getAllTiposProgramas);
 
-router.get('/tipos_programas/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getOneTipoPrograma);
+router.get('/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), getOneTipoPrograma);
 
-router.post('/tipos_programas', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createTipoPrograma);
+router.post('/', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), createTipoPrograma);
 
-router.put('/tipos_programas/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), updateTipoPrograma);
+router.put('/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), updateTipoPrograma);
 
-router.delete('/tipos_programas/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deleteTipoPrograma);
+router.delete('/:id_tipo', authenticateTokenUsuario, authenticateTipoUsuario('administrador'), deleteTipoPrograma);
 
 module.exports = router;
